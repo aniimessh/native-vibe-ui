@@ -1,9 +1,11 @@
 import type React from "react";
 import {
   ActivityIndicator,
+  type StyleProp,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  type ViewStyle,
 } from "react-native";
 import Typography from "./Typography";
 
@@ -18,7 +20,7 @@ type ButtonProps = {
   // Optional class name for additional styling
   className?: string;
   // Optional inline styles
-  style?: object;
+  style?: StyleProp<ViewStyle>;
   // Optional size variant for the button
   size?: "sm" | "md" | "lg";
   // Optional loading state flag
@@ -44,13 +46,12 @@ const Button: React.FC<ButtonProps> = ({
   icon,
   iconPosition = "right",
   loading = false,
-  loadingText,
+  loadingText, // Default loading text
   size = "md",
   style,
   variant,
   activeOpacity,
 }) => {
-  
   // Handle button press event
   const handlePress = () => {
     if (!disabled && onPress) {
@@ -93,34 +94,43 @@ const Button: React.FC<ButtonProps> = ({
         accessibilityLabel={loading ? loadingText : String(children)}
       >
         {loading ? (
-          <ActivityIndicator size="small" /> // Show loading spinner if loading is true
+          <View className="flex flex-row items-center gap-x-4">
+            <Typography
+              className={variant === "primary" ? "text-white" : "text-black"}
+            >
+              {loadingText}
+            </Typography>
+            <ActivityIndicator size="small" />
+          </View>
         ) : (
           <View className="flex flex-row items-center">
             {icon && iconPosition === "left" && (
               <>
-                {icon} {/* Render icon on the left */}
-                <Typography className={variant === "primary" ? "text-white" : ""}>
-                  {children} {/* Render button text */}
+                {icon}
+                <Typography
+                  className={variant === "primary" ? "text-white" : ""}
+                >
+                  {children}
                 </Typography>
               </>
             )}
             {!icon && (
               <Typography className={variant === "primary" ? "text-white" : ""}>
-                {children} {/* Render button text without icon */}
+                {children}
               </Typography>
             )}
             {icon && iconPosition === "right" && (
               <>
-                <Typography className={variant === "primary" ? "text-white" : ""}>
-                  {children} {/* Render button text */}
+                <Typography
+                  className={variant === "primary" ? "text-white" : ""}
+                >
+                  {children}
                 </Typography>
-                {icon} {/* Render icon on the right */}
+                {icon}
               </>
             )}
           </View>
         )}
-        {/* Render loading text if provided and not in loading state */}
-        {loadingText && !loading && <Typography>{loadingText}</Typography>}
       </TouchableOpacity>
     </TouchableWithoutFeedback>
   );

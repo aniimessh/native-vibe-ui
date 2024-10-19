@@ -1,59 +1,69 @@
+import type React from "react";
+import { View, Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "./src/components/Button";
 import { useState } from "react";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import Typography from "./src/components/Typography";
-import React from "react";
-import Input from "./src/components/Input";
+
+// Choose the appropriate container based on the platform
+const Container = Platform.OS === "web" ? View : SafeAreaView;
 
 export default function App() {
-  const [loading, setloading] = useState(false);
-  const [email, setEmail] = useState("");
+  // State to manage loading status for each button variant
+  const [loadingStates, setLoadingStates] = useState({
+    primary: false,
+    outlined: false,
+  });
 
-  const onSubmit = () => {
-    setloading(true);
-    setInterval(() => {
-      setloading(false);
+  // Function to handle button submission
+  const onSubmit = (variant: keyof typeof loadingStates) => {
+    console.log(`${variant} Button clicked`);
+
+    // Set the specific button's loading state to true
+    setLoadingStates((prev) => ({ ...prev, [variant]: true }));
+    console.log(`${variant} Button Loading`);
+
+    // Simulate a loading process
+    return setTimeout(() => {
+      console.log(`${variant} Loading finished`);
+      // Reset the specific button's loading state after 3 seconds
+      setLoadingStates((prev) => ({ ...prev, [variant]: false }));
     }, 3000);
-    console.log(email);
   };
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
 
-      {/* input */}
-      <View className="my-5">
-        <Input
-          placeholder="Enter your email"
-          onChangeText={(value) => setEmail(value)}
-          keyboardType="email-address"
+  return (
+    <Container className="flex-1 items-center justify-center">
+      <View className="flex flex-col gap-y-4 items-center">
+        {/* Icon Button */}
+        <Button
+          onPress={() => console.log("Icon Button clicked")}
+          variant="icon"
         >
-          <Typography className="mb-1">Email</Typography>
-        </Input>
+          <Ionicons name="add" size={24} />
+        </Button>
+
+        {/* Primary Button */}
+        <Button
+          onPress={() => onSubmit("primary")}
+          variant="primary"
+          disabled={loadingStates.primary}
+          className={`${loadingStates.primary ? "opacity-50" : ""}`} // Adjust opacity when loading
+        >
+          <Typography className="text-white">Primary</Typography>
+        </Button>
+
+        {/* Outlined Button */}
+        <Button
+          onPress={() => onSubmit("outlined")}
+          variant="outlined"
+          disabled={loadingStates.outlined}
+        >
+          <Typography className="text-black">Outlined</Typography>
+        </Button>
       </View>
-      {/* button */}
-      <Button
-        className={`${loading && "opacity-90"} px-2 py-3`}
-        onPress={onSubmit}
-        size="lg"
-        variant="link"
-        activeOpacity={1}
-        disabled={loading}
-        loading={loading}
-        loadingText="Sending..."
-      >
-        <Typography className="tracking-widest">Submit</Typography>
-      </Button>
-    </View>
+      <StatusBar style="auto" />
+    </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    padding: 20,
-  },
-});

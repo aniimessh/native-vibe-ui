@@ -7,7 +7,7 @@ type ButtonProps = {
   style?: object;
   disabled?: boolean;
   onPress?: () => unknown;
-  variant?: "primary" | "icon" | "outlined";
+  variant?: "primary" | "icon" | "outlined" | "link";
 };
 
 const Button = ({
@@ -23,7 +23,7 @@ const Button = ({
       case "primary":
         return "bg-black text-white";
       case "icon":
-        return "bg-transparent";
+        return "bg-transparent px-2 py-2";
       case "outlined":
         return "bg-transparent border border-black";
       default:

@@ -1,11 +1,18 @@
 import type React from "react";
-import { View, Platform } from "react-native";
+import {
+  View,
+  Platform,
+  ActivityIndicator,
+  Alert,
+  ToastAndroid,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Button from "./src/components/Button";
+import Button from "../components/Button";
 import { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Typography from "./src/components/Typography";
+import Typography from "../components/Typography";
+import { router } from "expo-router";
 
 // Choose the appropriate container based on the platform
 const Container = Platform.OS === "web" ? View : SafeAreaView;
@@ -38,10 +45,12 @@ export default function App() {
       <View className="flex flex-col gap-y-4 items-center">
         {/* Icon Button */}
         <Button
-          onPress={() => console.log("Icon Button clicked")}
+          onPress={() =>
+            ToastAndroid.show("Icon Button clicked", ToastAndroid.SHORT)
+          }
           variant="icon"
         >
-          <Ionicons name="add" size={24} />
+          <Ionicons name="add" size={20} />
         </Button>
 
         {/* Primary Button */}
@@ -49,7 +58,7 @@ export default function App() {
           onPress={() => onSubmit("primary")}
           variant="primary"
           disabled={loadingStates.primary}
-          className={`${loadingStates.primary ? "opacity-50" : ""}`} // Adjust opacity when loading
+          className={`${loadingStates.primary ? "opacity-50" : ""} rounded-md`} // Adjust opacity when loading
         >
           <Typography className="text-white">Primary</Typography>
         </Button>
@@ -59,8 +68,20 @@ export default function App() {
           onPress={() => onSubmit("outlined")}
           variant="outlined"
           disabled={loadingStates.outlined}
+          className="rounded-md w-[200px]"
         >
-          <Typography className="text-black">Outlined</Typography>
+          <Typography className="text-black text-center">
+            {loadingStates.outlined ? (
+              <ActivityIndicator size={"small"} />
+            ) : (
+              "Outlined Button"
+            )}
+          </Typography>
+        </Button>
+
+        {/* Link Button */}
+        <Button onPress={() => router.push("/home")} variant="link">
+          <Typography className="text-black">Go to Home</Typography>
         </Button>
       </View>
       <StatusBar style="auto" />

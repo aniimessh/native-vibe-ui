@@ -1,7 +1,7 @@
 {
   "name": "native-vibe-ui",
   "version": "1.0.0",
-  "main": "expo/AppEntry.js",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -19,6 +19,7 @@
     "@expo/metro-runtime": "~3.2.3",
     "commander": "^12.1.0",
     "expo": "~51.0.28",
+    "expo-router": "^3.5.23",
     "expo-status-bar": "~1.12.1",
     "fs-extra": "^11.2.0",
     "lucide-react": "^0.447.0",

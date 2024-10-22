@@ -1,12 +1,23 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { Animated } from "react-native";
+import React from "react";
+import Typography from "../components/Typography";
+import { usePersistedTheme } from "../hooks/usePersistedTheme";
 
 const Home = () => {
-  return (
-    <View>
-      <Text>Home</Text>
-    </View>
-  )
-}
+  const { isDarkMode, toggleTheme, fadeAnimation } = usePersistedTheme();
 
-export default Home
+  const containerClass = isDarkMode ? "bg-black" : "bg-white";
+  const textClass = isDarkMode ? "text-white" : "text-black";
+  return (
+    <Animated.View
+      style={{ opacity: fadeAnimation }} // Apply fade animation to the container
+      className={`flex-1 items-center justify-center ${containerClass}`}
+    >
+      <Typography className={`${isDarkMode ? "text-white" : "text-black"}`}>
+        Home Page
+      </Typography>
+    </Animated.View>
+  );
+};
+
+export default Home;

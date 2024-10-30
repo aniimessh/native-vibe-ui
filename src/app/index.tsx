@@ -6,7 +6,8 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Typography from "../components/Typography";
 import { usePersistedTheme } from "../hooks/usePersistedTheme";
 import { router } from "expo-router";
-import { StatusBar } from "react-native";
+import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "react-native";
 
 // Choose the appropriate container based on the platform
 const Container = Platform.OS === "web" ? View : SafeAreaView;
@@ -22,7 +23,9 @@ export default function App() {
       style={{ opacity: fadeAnimation }} // Apply fade animation to the container
       className={`flex-1 items-center justify-center ${containerClass}`}
     >
-      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+      {/* <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} /> */}
+      <StatusBar style={isDarkMode ? "light" : "dark"} />
+
       <View className="flex flex-col gap-y-4 items-center">
         {/* Icon Button for toggling theme */}
         <Button onPress={toggleTheme} variant="icon">
@@ -39,6 +42,9 @@ export default function App() {
           className={`${
             isDarkMode ? "bg-white text-black" : "bg-black text-white"
           }}`}
+          onLongPress={() => console.log("Long Pressed")}
+          onPress={() => console.log("Button Pressed")}
+          android_disableSound={true}
         >
           <Typography className={`${isDarkMode ? "text-black" : "text-white"}`}>
             Primary Button
@@ -50,7 +56,7 @@ export default function App() {
           variant="outlined"
           className={`${isDarkMode ? "border-white text-black" : ""}}`}
         >
-          <Typography className={textClass}>Outlined Button</Typography>
+          <Typography className={textClass}>Outlined Buttton</Typography>
         </Button>
 
         {/* Link Button */}
@@ -58,7 +64,6 @@ export default function App() {
           <Typography className={textClass}>Go to Home</Typography>
         </Button>
       </View>
-      
     </Animated.View>
   );
 }
